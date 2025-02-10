@@ -13,6 +13,7 @@ function App() {
         <Zundamon
           src={idleSprite}
           size={{ width: 1082, height: 1650 }}
+          scale={0.2}
           frames={10}
           fps={1}
           isPlaying={isPlaying}
