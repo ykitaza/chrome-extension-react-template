@@ -1,34 +1,29 @@
 import { useState } from 'react'
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
+import Zundamon from '../components/Zundamon'
+import idleSprite from '../assets/sprite/idle.png'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(true);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app-container">
+      <h1>ずんだもんアニメーション</h1>
+      <div className="animation-container">
+        <Zundamon
+          src={idleSprite}
+          size={{ width: 1082, height: 1650 }}
+          frames={10}
+          fps={1}
+          isPlaying={isPlaying}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <div className="controls">
+        <button onClick={() => setIsPlaying(!isPlaying)}>
+          {isPlaying ? "停止" : "再生"}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
