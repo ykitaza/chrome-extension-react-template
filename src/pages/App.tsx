@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import Zundamon from '../components/Zundamon'
 import idleSprite from '../assets/sprite/idle.png'
 import talkSprite from '../assets/sprite/talk.png'  // 会話時のスプライト
@@ -17,25 +17,46 @@ const spriteConfig = {
   talk: {
     size: { width: 1082, height: 1650 },  // トーキングスプライトのサイズ
     scale: 0.2,  // スケールを調整
-    frames: 10,  // フレーム数
-    fps: 12
+    frames: 2,  // フレーム数
+    fps: 220  // 会話時は固定FPS
   }
 };
-
 
 function App() {
   const [isVoicePlaying, setIsVoicePlaying] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const [currentFrame, setCurrentFrame] = useState(0);
+  const blinkTimeoutRef = useRef<number | null>(null);
 
-  // ランダムなfpsを生成する関数
-  const getRandomFps = () => {
-    if (isVoicePlaying) {
-      // 会話中は高速アニメーション
-      return 12;
+  // 瞬きの制御
+  useEffect(() => {
+    const startBlinking = () => {
+      // 目を閉じる
+      setCurrentFrame(1);
+
+      // 0.15秒後に目を開く
+      setTimeout(() => {
+        setCurrentFrame(0);
+
+        // 次の瞬きまでの時間をランダムに設定
+        const nextBlinkDelay = 1000 + Math.random() * 3000;
+        blinkTimeoutRef.current = window.setTimeout(startBlinking, nextBlinkDelay);
+      }, 150);
+    };
+
+    if (!isVoicePlaying) {
+      // 最初の瞬きまでの時間をランダムに設定（1-3秒）
+      const initialDelay = 1000 + Math.random() * 2000;
+      blinkTimeoutRef.current = window.setTimeout(startBlinking, initialDelay);
     }
-    // 通常時は低速でまばたき
-    return Math.random() < 0.1 ? 12 : 1;
-  };
+
+    return () => {
+      if (blinkTimeoutRef.current !== null) {
+        clearTimeout(blinkTimeoutRef.current);
+        setCurrentFrame(0);  // 目を開いた状態に戻す
+      }
+    };
+  }, [isVoicePlaying]);
 
   const handleVoiceEnd = useCallback(() => {
     console.log("音声再生完了");
@@ -62,7 +83,8 @@ function App() {
           scale={config.scale}
           frames={config.frames}
           fps={config.fps}
-          isPlaying={true}
+          isPlaying={true}  // 常にアニメーションを有効にし、currentFrameで制御
+          currentFrame={!isVoicePlaying ? currentFrame : undefined}  // アイドル時のみ手動でフレーム制御
           voice={isVoicePlaying ? {
             src: helloWav,
             autoPlay: true,

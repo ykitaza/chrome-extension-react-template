@@ -16,6 +16,7 @@ interface ZundamonProps {
     frames: number;
     fps?: number | (() => number);
     isPlaying?: boolean;
+    currentFrame?: number;  // 手動でフレームを制御するためのプロパティを追加
     voice?: {
         src: AudioFileType;
         autoPlay?: boolean;
@@ -36,10 +37,11 @@ const Zundamon = ({
     frames,
     fps = 12,
     isPlaying = true,
+    currentFrame,
     voice,
     dialog
 }: ZundamonProps) => {
-    const [frame, setFrame] = useState(0);
+    const [frame, setFrame] = useState(currentFrame || 0);
     const [imageError, setImageError] = useState(false);
     const [currentFps, setCurrentFps] = useState(typeof fps === 'function' ? fps() : fps);
     const [displayText, setDisplayText] = useState('');
@@ -116,6 +118,12 @@ const Zundamon = ({
         img.onerror = () => setImageError(true);
         img.src = src;
 
+        // currentFrameが指定されている場合は、そのフレームを使用
+        if (currentFrame !== undefined) {
+            setFrame(currentFrame);
+            return;
+        }
+
         if (!isPlaying) {
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);
@@ -127,7 +135,6 @@ const Zundamon = ({
         const interval = 1000 / currentFps;
 
         const animate = (currentTime: number) => {
-            // fpsが関数の場合、一定間隔でfpsを更新
             if (typeof fps === 'function' && currentTime - lastFpsUpdateRef.current > 1000) {
                 setCurrentFps(fps());
                 lastFpsUpdateRef.current = currentTime;
@@ -147,7 +154,7 @@ const Zundamon = ({
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [frames, fps, currentFps, isPlaying, src]);
+    }, [frames, fps, currentFps, isPlaying, src, currentFrame]);
 
     // セリフのアニメーション
     useEffect(() => {
