@@ -1,8 +1,26 @@
 import { useState, useCallback } from 'react'
 import Zundamon from '../components/Zundamon'
 import idleSprite from '../assets/sprite/idle.png'
+import talkSprite from '../assets/sprite/talk.png'  // 会話時のスプライト
 import helloWav from '../assets/voices/hello.wav'
 import './App.css'
+
+// スプライトごとの設定
+const spriteConfig = {
+  idle: {
+    size: { width: 1082, height: 1650 },
+    scale: 0.2,
+    frames: 2,
+    fps: 1
+  },
+
+  talk: {
+    size: { width: 1082, height: 1650 },  // トーキングスプライトのサイズ
+    scale: 0.2,  // スケールを調整
+    frames: 10,  // フレーム数
+    fps: 12
+  }
+};
 
 
 function App() {
@@ -11,8 +29,11 @@ function App() {
 
   // ランダムなfpsを生成する関数
   const getRandomFps = () => {
-    // 90%の確率で通常のfps（1）
-    // 10%の確率で瞬きアニメーション（12fps）
+    if (isVoicePlaying) {
+      // 会話中は高速アニメーション
+      return 12;
+    }
+    // 通常時は低速でまばたき
     return Math.random() < 0.1 ? 12 : 1;
   };
 
@@ -28,16 +49,20 @@ function App() {
     setShowDialog(true);
   }, []);
 
+  // 現在のスプライト設定を取得
+  const currentSprite = isVoicePlaying ? 'talk' : 'idle';
+  const config = spriteConfig[currentSprite];
+
   return (
     <div className="app-container">
       <div className="animation-container">
         <Zundamon
-          src={idleSprite}
-          size={{ width: 1082, height: 1650 }}
-          scale={0.2}
-          frames={10}
-          fps={getRandomFps}
-          isPlaying={isVoicePlaying}  // 音声再生中のみアニメーション
+          src={isVoicePlaying ? talkSprite : idleSprite}
+          size={config.size}
+          scale={config.scale}
+          frames={config.frames}
+          fps={config.fps}
+          isPlaying={true}
           voice={isVoicePlaying ? {
             src: helloWav,
             autoPlay: true,
@@ -45,7 +70,7 @@ function App() {
           } : undefined}
           dialog={showDialog ? {
             text: "こんにちは！ずんだもんです！",
-            speed: 80,  // 80ミリ秒/文字
+            speed: 80,
           } : undefined}
         />
       </div>
