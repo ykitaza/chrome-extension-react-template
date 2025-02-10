@@ -8,6 +8,7 @@ import './App.css'
 function App() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isVoicePlaying, setIsVoicePlaying] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
 
   // ランダムなfpsを生成する関数
   const getRandomFps = () => {
@@ -19,16 +20,17 @@ function App() {
   const handleVoiceEnd = useCallback(() => {
     console.log("音声再生完了");
     setIsVoicePlaying(false);
+    setShowDialog(false);
   }, []);
 
   const handleVoicePlay = useCallback(() => {
     console.log("音声再生開始");
     setIsVoicePlaying(true);
+    setShowDialog(true);
   }, []);
 
   return (
     <div className="app-container">
-      <h1>ずんだもんアニメーション</h1>
       <div className="animation-container">
         <Zundamon
           src={idleSprite}
@@ -36,11 +38,15 @@ function App() {
           scale={0.2}
           frames={10}
           fps={getRandomFps}
-          isPlaying={isVoicePlaying}
+          isPlaying={isPlaying}
           voice={isVoicePlaying ? {
             src: helloWav,
             autoPlay: true,
             onEnd: handleVoiceEnd
+          } : undefined}
+          dialog={showDialog ? {
+            text: "こんにちは！ずんだもんです！",
+            speed: 80,  // 80ミリ秒/文字
           } : undefined}
         />
       </div>
@@ -50,9 +56,9 @@ function App() {
         </button>
         <button
           onClick={handleVoicePlay}
-          disabled={isVoicePlaying}
+          disabled={isVoicePlaying || showDialog}
         >
-          音声再生
+          会話開始
         </button>
       </div>
     </div>
