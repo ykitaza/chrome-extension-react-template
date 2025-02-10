@@ -36,7 +36,7 @@ function App() {
           scale={0.2}
           frames={10}
           fps={getRandomFps}
-          isPlaying={isPlaying}
+          isPlaying={isVoicePlaying}
           voice={isVoicePlaying ? {
             src: helloWav,
             autoPlay: true,
