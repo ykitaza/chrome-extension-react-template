@@ -6,6 +6,13 @@ import './App.css'
 function App() {
   const [isPlaying, setIsPlaying] = useState(true);
 
+  // ランダムなfpsを生成する関数
+  const getRandomFps = () => {
+    // 90%の確率で通常のfps（1）
+    // 10%の確率で瞬きアニメーション（12fps）
+    return Math.random() < 0.9 ? 1 : 12;
+  };
+
   return (
     <div className="app-container">
       <h1>ずんだもんアニメーション</h1>
@@ -15,7 +22,7 @@ function App() {
           size={{ width: 1082, height: 1650 }}
           scale={0.2}
           frames={10}
-          fps={1}
+          fps={getRandomFps}
           isPlaying={isPlaying}
         />
       </div>

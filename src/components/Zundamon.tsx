@@ -8,7 +8,7 @@ interface ZundamonProps {
     };
     scale?: number;
     frames: number;
-    fps?: number;
+    fps?: number | (() => number);
     isPlaying?: boolean;
 }
 
@@ -22,7 +22,9 @@ const Zundamon = ({
 }: ZundamonProps) => {
     const [frame, setFrame] = useState(0);
     const [imageError, setImageError] = useState(false);
+    const [currentFps, setCurrentFps] = useState(typeof fps === 'function' ? fps() : fps);
     const animationRef = useRef<number>();
+    const lastFpsUpdateRef = useRef<number>(0);
 
     const scaledWidth = size.width * scale;
     const scaledHeight = size.height * scale;
@@ -42,9 +44,15 @@ const Zundamon = ({
         }
 
         let lastTime = 0;
-        const interval = 1000 / fps;
+        const interval = 1000 / currentFps;
 
         const animate = (currentTime: number) => {
+            // fpsが関数の場合、一定間隔でfpsを更新
+            if (typeof fps === 'function' && currentTime - lastFpsUpdateRef.current > 1000) {
+                setCurrentFps(fps());
+                lastFpsUpdateRef.current = currentTime;
+            }
+
             if (currentTime - lastTime >= interval) {
                 setFrame(prev => (prev + 1) % frames);
                 lastTime = currentTime;
@@ -59,7 +67,7 @@ const Zundamon = ({
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [frames, fps, isPlaying, src]);
+    }, [frames, fps, currentFps, isPlaying, src]);
 
     if (imageError) {
         return (
