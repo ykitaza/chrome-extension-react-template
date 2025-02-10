@@ -6,7 +6,6 @@ import './App.css'
 
 
 function App() {
-  const [isPlaying, setIsPlaying] = useState(true);
   const [isVoicePlaying, setIsVoicePlaying] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
 
@@ -38,7 +37,7 @@ function App() {
           scale={0.2}
           frames={10}
           fps={getRandomFps}
-          isPlaying={isPlaying}
+          isPlaying={isVoicePlaying}  // 音声再生中のみアニメーション
           voice={isVoicePlaying ? {
             src: helloWav,
             autoPlay: true,
@@ -51,9 +50,6 @@ function App() {
         />
       </div>
       <div className="controls">
-        <button onClick={() => setIsPlaying(!isPlaying)}>
-          {isPlaying ? "停止" : "再生"}
-        </button>
         <button
           onClick={handleVoicePlay}
           disabled={isVoicePlaying || showDialog}
