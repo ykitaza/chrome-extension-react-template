@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import ActionZundamon from '../components/ActionZundamon';
-import { spriteConfig } from '../config/sprites';
+import { spriteConfig, defaultBlinkConfig } from '../config/sprites';
 import { generateResponse, getApiKey } from '../utils/gemini';
 import { generateVoice, getVoicevoxApiKey } from '../utils/voicevox';
 import { ApiKeyInput } from '../components/ApiKeyInput';
 import { VoicevoxKeyInput } from '../components/VoicevoxKeyInput';
 import { Layout } from '../components/Layout';
 import './ChatPage.css';
+import IdleZundamon from '../components/IdleZundamon';
 
 interface ChatPageProps {
     onBackToNormal: () => void;
@@ -29,7 +30,7 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
     // 吹き出しの表示速度を計算（音声の長さに合わせる）
     const calculateDialogSpeed = (text: string, duration: number) => {
         // 空白と記号を除いた文字数
-        const cleanText = text.replace(/[\s\.,。、！？!?]/g, '').length;
+        const cleanText = text.replace(/[\s,。、！？!?]/g, '').length;
         // 1文字あたりの表示時間（ミリ秒）を計算
         return Math.floor(duration / cleanText);
     };
@@ -168,18 +169,29 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
     return (
         <Layout onChatModeToggle={onBackToNormal} isChatMode={true}>
             <div className="chat-animation-container">
-                <ActionZundamon
-                    src={chatAction.src}
-                    size={chatAction.size}
-                    scale={chatAction.scale}
-                    frames={chatAction.frames}
-                    fps={chatAction.fps}
-                    isPlaying={isAnimating}
-                    dialog={showDialog ? {
-                        text: response,
-                        speed: dialogSpeed
-                    } : undefined}
-                />
+                {isAnimating ? (
+                    <ActionZundamon
+                        src={chatAction.src}
+                        size={chatAction.size}
+                        scale={chatAction.scale}
+                        frames={chatAction.frames}
+                        fps={chatAction.fps}
+                        isPlaying={true}
+                        dialog={showDialog ? {
+                            text: response,
+                            speed: dialogSpeed
+                        } : undefined}
+                    />
+                ) : (
+                    <IdleZundamon
+                        src={spriteConfig.idle.default.src}
+                        size={spriteConfig.idle.default.size}
+                        scale={spriteConfig.idle.default.scale}
+                        frames={spriteConfig.idle.default.frames}
+                        interval={defaultBlinkConfig.interval}
+                        duration={defaultBlinkConfig.duration}
+                    />
+                )}
             </div>
 
             <form onSubmit={handleSubmit} className="chat-input-form">
