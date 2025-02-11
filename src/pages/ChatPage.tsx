@@ -190,11 +190,6 @@ export const ChatPage = () => {
                 ref={audioRef}
                 style={{ display: 'none' }}
             />
-
-            <div className="credits">
-                <p>VOICEVOX：ずんだもん</p>
-                <p>立ち絵：<a href="https://x.com/sakamoto_ahr" target="_blank" rel="noopener noreferrer">坂本アヒル</a> 様</p>
-            </div>
         </Layout>
     );
 }; 

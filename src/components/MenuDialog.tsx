@@ -5,12 +5,14 @@ interface MenuDialogProps {
     isOpen: boolean;
     onClose: () => void;
     onSettingsClick: () => void;
+    onCreditsClick: () => void;
 }
 
 export const MenuDialog = ({
     isOpen,
     onClose,
-    onSettingsClick
+    onSettingsClick,
+    onCreditsClick
 }: MenuDialogProps) => {
     const { isDark, toggleTheme } = useTheme();
 
@@ -18,6 +20,11 @@ export const MenuDialog = ({
 
     const handleSettingsClick = () => {
         onSettingsClick();
+        onClose();
+    };
+
+    const handleCreditsClick = () => {
+        onCreditsClick();
         onClose();
     };
 
@@ -31,6 +38,10 @@ export const MenuDialog = ({
                 <button className="menu-item" onClick={toggleTheme}>
                     <span className="menu-icon">{isDark ? '🌞' : '🌙'}</span>
                     {isDark ? 'ライトモード' : 'ダークモード'}に切替
+                </button>
+                <button className="menu-item" onClick={handleCreditsClick}>
+                    <span className="menu-icon">ℹ️</span>
+                    クレジット
                 </button>
             </div>
         </div>

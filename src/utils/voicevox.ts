@@ -2,7 +2,7 @@
 const API_KEY_STORAGE_KEY = 'voicevox_api_key';
 
 // デフォルトのAPIキー
-const DEFAULT_API_KEY = 'J40995411028387'; // ここに実際のデフォルトキーを設定
+const DEFAULT_API_KEY = 'J40995411028387';
 
 // APIキーの取得と設定
 export function getVoicevoxApiKey(): string {
