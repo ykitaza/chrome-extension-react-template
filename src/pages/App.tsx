@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import ActionZundamon from '../components/ActionZundamon'
 import IdleZundamon from '../components/IdleZundamon'
 import { ControlPanel } from '../components/ControlPanel'
+import { ThemeToggle } from '../components/ThemeToggle'
 import { spriteConfig, defaultBlinkConfig } from '../config/sprites'
 import './App.css'
 
@@ -32,6 +33,7 @@ function App() {
   // Render
   return (
     <div className="app-container">
+      <ThemeToggle />
       <div className="animation-container">
         {isVoicePlaying ? (
           <ActionZundamon
