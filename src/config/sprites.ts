@@ -3,7 +3,7 @@ import { SpriteConfig } from '../types/common';
 export const spriteConfig: SpriteConfig = {
     idle: {
         default: {
-            src: '/src/assets/sprite/idle.png',
+            src: '/src/assets/sprite/idle_default.png',
             size: { width: 1082, height: 1650 },
             scale: 0.2,
             frames: 2
