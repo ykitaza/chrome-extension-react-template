@@ -131,3 +131,23 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.credits {
+  margin-top: 2rem;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.credits p {
+  margin: 0.5rem 0;
+}
+
+.credits a {
+  color: #646cff;
+  text-decoration: none;
+}
+
+.credits a:hover {
+  text-decoration: underline;
+}
