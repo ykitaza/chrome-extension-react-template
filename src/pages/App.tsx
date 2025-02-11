@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react'
 import ActionZundamon from '../components/ActionZundamon'
 import IdleZundamon from '../components/IdleZundamon'
 import { ControlPanel } from '../components/ControlPanel'
-import { ThemeToggle } from '../components/ThemeToggle'
 import { ChatPage } from './ChatPage'
+import { Layout } from '../components/Layout'
 import { spriteConfig, defaultBlinkConfig } from '../config/sprites'
 import './App.css'
 
@@ -46,8 +46,7 @@ function App() {
 
   // Render
   return (
-    <div className="app-container">
-      <ThemeToggle />
+    <Layout onChatModeToggle={handleChatModeToggle} isChatMode={isChatMode}>
       <div className="animation-container">
         {isVoicePlaying ? (
           <ActionZundamon
@@ -83,14 +82,12 @@ function App() {
         onIdlePatternChange={setCurrentIdlePattern}
         onActionPatternChange={setCurrentActionPattern}
         onActionStart={handleActionStart}
-        isChatMode={isChatMode}
-        onChatModeToggle={handleChatModeToggle}
       />
       <div className="credits">
         <p>VOICEVOX：ずんだもん</p>
         <p>立ち絵：<a href="https://x.com/sakamoto_ahr" target="_blank" rel="noopener noreferrer">坂本アヒル</a> 様</p>
       </div>
-    </div>
+    </Layout>
   )
 }
 

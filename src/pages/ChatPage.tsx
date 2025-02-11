@@ -5,7 +5,7 @@ import { generateResponse, getApiKey } from '../utils/gemini';
 import { generateVoice, getVoicevoxApiKey } from '../utils/voicevox';
 import { ApiKeyInput } from '../components/ApiKeyInput';
 import { VoicevoxKeyInput } from '../components/VoicevoxKeyInput';
-import { SettingsDialog } from '../components/SettingsDialog';
+import { Layout } from '../components/Layout';
 import './ChatPage.css';
 
 interface ChatPageProps {
@@ -22,7 +22,6 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
     const [hasVoicevoxKey, setHasVoicevoxKey] = useState(() => !!getVoicevoxApiKey());
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
-    const [showSettings, setShowSettings] = useState(false);
 
     // 会話用のアクションパターン
     const chatAction = spriteConfig.action.talk;
@@ -167,13 +166,7 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
     }
 
     return (
-        <div className="chat-page">
-            <div className="chat-header">
-                <button onClick={() => setShowSettings(true)} className="settings-button">
-                    設定
-                </button>
-            </div>
-
+        <Layout onChatModeToggle={onBackToNormal} isChatMode={true}>
             <div className="chat-animation-container">
                 <ActionZundamon
                     src={chatAction.src}
@@ -202,21 +195,10 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
                 </button>
             </form>
 
-            <div className="chat-footer">
-                <button onClick={onBackToNormal} className="back-button">
-                    通常モードに戻る
-                </button>
-            </div>
-
             <audio
                 ref={audioRef}
                 style={{ display: 'none' }}
             />
-
-            <SettingsDialog
-                isOpen={showSettings}
-                onClose={() => setShowSettings(false)}
-            />
-        </div>
+        </Layout>
     );
 }; 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
 
 export const useTheme = () => {
     const [theme, setTheme] = useState<Theme>(() => {
@@ -11,6 +11,8 @@ export const useTheme = () => {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     });
 
+    const isDark = theme === 'dark';
+
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
@@ -20,5 +22,5 @@ export const useTheme = () => {
         setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
     };
 
-    return { theme, toggleTheme };
+    return { theme, isDark, toggleTheme };
 }; 
