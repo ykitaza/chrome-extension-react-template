@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import ActionZundamon from '../components/ActionZundamon';
 import { spriteConfig } from '../config/sprites';
-import { generateResponse } from '../utils/gemini';
+import { generateResponse, getApiKey } from '../utils/gemini';
+import { ApiKeyInput } from '../components/ApiKeyInput';
 import './ChatPage.css';
 
 interface ChatPageProps {
@@ -10,37 +11,50 @@ interface ChatPageProps {
 
 export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
     const [message, setMessage] = useState('');
-    const [isVoicePlaying, setIsVoicePlaying] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [response, setResponse] = useState('');
+    const [hasApiKey, setHasApiKey] = useState(() => !!getApiKey());
 
     // 会話用のアクションパターン
     const chatAction = spriteConfig.action.talk;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!message.trim() || isVoicePlaying) return;
+        if (!message.trim() || isAnimating) return;
 
         console.log("会話開始");
-        setIsVoicePlaying(true);
+        setIsAnimating(true);
         setShowDialog(true);
 
         try {
             const aiResponse = await generateResponse(message);
             setResponse(aiResponse);
+            // 応答表示後、一定時間後に状態をリセット
+            setTimeout(() => {
+                setIsAnimating(false);
+                setShowDialog(false);
+                setMessage('');
+                setResponse('');
+            }, 5000); // 5秒後にリセット
         } catch (error) {
             console.error('応答生成エラー:', error);
+            if (error instanceof Error && error.message === 'APIキーが設定されていません') {
+                setHasApiKey(false);
+            }
             setResponse('すみませんなのだ...うまく応答できなかったのだ...');
+            setIsAnimating(false);
+            setShowDialog(false);
         }
     };
 
-    const handleVoiceEnd = () => {
-        console.log("会話終了");
-        setIsVoicePlaying(false);
-        setShowDialog(false);
-        setMessage('');
-        setResponse('');
+    const handleApiKeySet = () => {
+        setHasApiKey(true);
     };
+
+    if (!hasApiKey) {
+        return <ApiKeyInput onApiKeySet={handleApiKeySet} />;
+    }
 
     return (
         <div className="chat-page">
@@ -57,12 +71,7 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
                     scale={chatAction.scale}
                     frames={chatAction.frames}
                     fps={chatAction.fps}
-                    isPlaying={isVoicePlaying}
-                    voice={isVoicePlaying ? {
-                        src: chatAction.voice,
-                        autoPlay: true,
-                        onEnd: handleVoiceEnd
-                    } : undefined}
+                    isPlaying={isAnimating}
                     dialog={showDialog ? {
                         text: response || 'ちょっと待つのだ...',
                         speed: 50
@@ -76,9 +85,9 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="ずんだもんに話しかける..."
-                    disabled={isVoicePlaying}
+                    disabled={isAnimating}
                 />
-                <button type="submit" disabled={isVoicePlaying || !message.trim()}>
+                <button type="submit" disabled={isAnimating || !message.trim()}>
                     送信
                 </button>
             </form>
