@@ -1,6 +1,6 @@
 import { SpriteConfig } from '../types/common';
 import idle_default from '../assets/sprite/idle_default.png';
-import idle_happy from '../assets/sprite/idle_default.png';
+import idle_happy from '../assets/sprite/idle_happy.png';
 import talk from '../assets/sprite/talk.png';
 import hello from '../assets/voices/hello.wav';
 
