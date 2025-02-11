@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: mode === 'github' ? 'docs' : 'build',
     assetsDir: 'assets',
+    emptyOutDir: true,
     rollupOptions: {
       input: {
         main: './index.html',
