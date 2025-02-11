@@ -59,7 +59,56 @@
 }
 
 .controls {
-  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.pattern-controls {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.select-group label {
+  font-size: 0.9rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pattern-controls select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #646cff;
+  background-color: #1a1a1a;
+  color: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.pattern-controls select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pattern-controls select:focus {
+  outline: none;
+  border-color: #535bf2;
+}
+
+.pattern-controls option {
+  background-color: #1a1a1a;
+  color: white;
 }
 
 button {
@@ -71,8 +120,14 @@ button {
   color: white;
   cursor: pointer;
   transition: background-color 0.25s;
+  min-width: 120px;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   background-color: #646cff;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

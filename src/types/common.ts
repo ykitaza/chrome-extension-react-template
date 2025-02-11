@@ -42,20 +42,28 @@ export interface DialogProps {
     onComplete?: () => void;
 }
 
+export interface IdlePattern {
+    src: string;
+    size: SpriteSize;
+    scale: number;
+    frames: number;
+}
+
+export interface ActionPattern {
+    src: string;
+    size: SpriteSize;
+    scale: number;
+    frames: number;
+    fps: number;
+    voice: string;
+    dialog: DialogProps;
+}
+
 export interface SpriteConfig {
     idle: {
-        src: string;
-        size: SpriteSize;
-        scale: number;
-        frames: number;
+        [key: string]: IdlePattern;
     };
     action: {
-        src: string;
-        size: SpriteSize;
-        scale: number;
-        frames: number;
-        fps: number;
-        voice: string;
-        dialog: DialogProps;
+        [key: string]: ActionPattern;
     };
 } 
