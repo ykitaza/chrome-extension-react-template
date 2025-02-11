@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ActionZundamon from '../components/ActionZundamon';
 import { spriteConfig } from '../config/sprites';
+import { generateResponse } from '../utils/gemini';
 import './ChatPage.css';
 
 interface ChatPageProps {
@@ -11,17 +12,26 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
     const [message, setMessage] = useState('');
     const [isVoicePlaying, setIsVoicePlaying] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
+    const [response, setResponse] = useState('');
 
     // 会話用のアクションパターン
     const chatAction = spriteConfig.action.talk;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!message.trim() || isVoicePlaying) return;
 
         console.log("会話開始");
         setIsVoicePlaying(true);
         setShowDialog(true);
+
+        try {
+            const aiResponse = await generateResponse(message);
+            setResponse(aiResponse);
+        } catch (error) {
+            console.error('応答生成エラー:', error);
+            setResponse('すみませんなのだ...うまく応答できなかったのだ...');
+        }
     };
 
     const handleVoiceEnd = () => {
@@ -29,6 +39,7 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
         setIsVoicePlaying(false);
         setShowDialog(false);
         setMessage('');
+        setResponse('');
     };
 
     return (
@@ -53,7 +64,7 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
                         onEnd: handleVoiceEnd
                     } : undefined}
                     dialog={showDialog ? {
-                        text: message,
+                        text: response || 'ちょっと待つのだ...',
                         speed: 50
                     } : undefined}
                 />
