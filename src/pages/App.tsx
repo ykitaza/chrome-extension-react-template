@@ -19,13 +19,13 @@ function App() {
 
   // Handlers
   const handleVoiceEnd = useCallback(() => {
-    console.log("音声再生完了");
+    console.log("アクション終了");
     setIsVoicePlaying(false);
     setShowDialog(false);
   }, []);
 
-  const handleVoicePlay = useCallback(() => {
-    console.log("音声再生開始");
+  const handleActionStart = useCallback(() => {
+    console.log("アクション開始");
     setIsVoicePlaying(true);
     setShowDialog(true);
   }, []);
@@ -68,7 +68,7 @@ function App() {
         currentActionPattern={currentActionPattern}
         onIdlePatternChange={setCurrentIdlePattern}
         onActionPatternChange={setCurrentActionPattern}
-        onVoicePlay={handleVoicePlay}
+        onActionStart={handleActionStart}
       />
       <div className="credits">
         <p>VOICEVOX：ずんだもん</p>
