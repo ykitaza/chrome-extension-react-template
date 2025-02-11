@@ -49,7 +49,7 @@ export interface SpriteConfig {
         scale: number;
         frames: number;
     };
-    talk: {
+    action: {
         src: string;
         size: SpriteSize;
         scale: number;

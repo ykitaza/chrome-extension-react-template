@@ -25,18 +25,18 @@ function App() {
       <div className="animation-container">
         {isVoicePlaying ? (
           <ActionZundamon
-            src={spriteConfig.talk.src}
-            size={spriteConfig.talk.size}
-            scale={spriteConfig.talk.scale}
-            frames={spriteConfig.talk.frames}
-            fps={spriteConfig.talk.fps}
+            src={spriteConfig.action.src}
+            size={spriteConfig.action.size}
+            scale={spriteConfig.action.scale}
+            frames={spriteConfig.action.frames}
+            fps={spriteConfig.action.fps}
             isPlaying={true}
             voice={{
-              src: spriteConfig.talk.voice,
+              src: spriteConfig.action.voice,
               autoPlay: true,
               onEnd: handleVoiceEnd
             }}
-            dialog={showDialog ? spriteConfig.talk.dialog : undefined}
+            dialog={showDialog ? spriteConfig.action.dialog : undefined}
           />
         ) : (
           <IdleZundamon
