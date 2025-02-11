@@ -1,25 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
+import { BaseProps, BlinkAnimationProps } from '../types/common';
+import { createImageErrorHandler, createErrorDisplay } from '../utils/sprite';
 
-interface BlinkingZundamonProps {
-    src: string;
-    size: {
-        width: number;
-        height: number;
-    };
-    scale?: number;
-    blinkInterval?: {
-        min: number;  // 最小間隔（ミリ秒）
-        max: number;  // 最大間隔（ミリ秒）
-    };
-    blinkDuration?: number;  // 瞬きの持続時間（ミリ秒）
-}
+interface BlinkingZundamonProps extends BaseProps, BlinkAnimationProps { }
 
 const BlinkingZundamon = ({
     src,
     size,
     scale = 1,
-    blinkInterval = { min: 1000, max: 4000 },
-    blinkDuration = 150
+    interval = { min: 1000, max: 4000 },
+    duration = 150
 }: BlinkingZundamonProps) => {
     const [currentFrame, setCurrentFrame] = useState(0);
     const [imageError, setImageError] = useState(false);
@@ -29,9 +19,7 @@ const BlinkingZundamon = ({
     const scaledHeight = size.height * scale;
 
     useEffect(() => {
-        const img = new Image();
-        img.src = src;
-        img.onerror = () => setImageError(true);
+        createImageErrorHandler(setImageError, src);
     }, [src]);
 
     // 瞬きの制御
@@ -45,13 +33,13 @@ const BlinkingZundamon = ({
                 setCurrentFrame(0);
 
                 // 次の瞬きまでの時間をランダムに設定
-                const nextBlinkDelay = blinkInterval.min + Math.random() * (blinkInterval.max - blinkInterval.min);
+                const nextBlinkDelay = interval.min + Math.random() * (interval.max - interval.min);
                 blinkTimeoutRef.current = window.setTimeout(startBlinking, nextBlinkDelay);
-            }, blinkDuration);
+            }, duration);
         };
 
         // 最初の瞬きまでの時間をランダムに設定
-        const initialDelay = blinkInterval.min / 2 + Math.random() * (blinkInterval.max - blinkInterval.min) / 2;
+        const initialDelay = interval.min / 2 + Math.random() * (interval.max - interval.min) / 2;
         blinkTimeoutRef.current = window.setTimeout(startBlinking, initialDelay);
 
         return () => {
@@ -60,21 +48,12 @@ const BlinkingZundamon = ({
                 setCurrentFrame(0);
             }
         };
-    }, [blinkInterval, blinkDuration]);
+    }, [interval, duration]);
 
     // 画像エラー時の表示
     if (imageError) {
         return (
-            <div style={{
-                width: scaledWidth,
-                height: scaledHeight,
-                border: '1px dashed #ff0000',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: `${12 * scale}px`,
-                color: '#ff0000',
-            }}>
+            <div style={createErrorDisplay(scaledWidth, scaledHeight, scale)}>
                 画像が見つかりません
             </div>
         );
