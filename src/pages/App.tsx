@@ -3,6 +3,7 @@ import ActionZundamon from '../components/ActionZundamon'
 import IdleZundamon from '../components/IdleZundamon'
 import { ControlPanel } from '../components/ControlPanel'
 import { ThemeToggle } from '../components/ThemeToggle'
+import { ChatPage } from './ChatPage'
 import { spriteConfig, defaultBlinkConfig } from '../config/sprites'
 import './App.css'
 
@@ -12,6 +13,7 @@ function App() {
   const [showDialog, setShowDialog] = useState(false);
   const [currentIdlePattern, setCurrentIdlePattern] = useState<string>('default');
   const [currentActionPattern, setCurrentActionPattern] = useState<string>('talk');
+  const [isChatMode, setIsChatMode] = useState(false);
 
   // Current patterns
   const currentIdle = spriteConfig.idle[currentIdlePattern];
@@ -29,6 +31,18 @@ function App() {
     setIsVoicePlaying(true);
     setShowDialog(true);
   }, []);
+
+  const handleChatModeToggle = useCallback(() => {
+    setIsChatMode(prev => !prev);
+    // チャットモード切り替え時に実行中のアクションをリセット
+    setIsVoicePlaying(false);
+    setShowDialog(false);
+  }, []);
+
+  // チャットモードの場合は会話ページを表示
+  if (isChatMode) {
+    return <ChatPage onBackToNormal={handleChatModeToggle} />;
+  }
 
   // Render
   return (
@@ -69,6 +83,8 @@ function App() {
         onIdlePatternChange={setCurrentIdlePattern}
         onActionPatternChange={setCurrentActionPattern}
         onActionStart={handleActionStart}
+        isChatMode={isChatMode}
+        onChatModeToggle={handleChatModeToggle}
       />
       <div className="credits">
         <p>VOICEVOX：ずんだもん</p>

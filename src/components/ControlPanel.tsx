@@ -9,6 +9,8 @@ interface ControlPanelProps {
     onIdlePatternChange: (pattern: string) => void;
     onActionPatternChange: (pattern: string) => void;
     onActionStart: () => void;
+    isChatMode: boolean;
+    onChatModeToggle: () => void;
 }
 
 export const ControlPanel = ({
@@ -18,7 +20,9 @@ export const ControlPanel = ({
     currentActionPattern,
     onIdlePatternChange,
     onActionPatternChange,
-    onActionStart
+    onActionStart,
+    isChatMode,
+    onChatModeToggle
 }: ControlPanelProps) => (
     <div className="controls">
         <div className="pattern-controls">
@@ -39,11 +43,20 @@ export const ControlPanel = ({
                 disabled={isVoicePlaying}
             />
         </div>
-        <button
-            onClick={onActionStart}
-            disabled={isVoicePlaying || showDialog}
-        >
-            アクション開始
-        </button>
+        <div className="action-controls">
+            <button
+                onClick={onActionStart}
+                disabled={isVoicePlaying || showDialog || isChatMode}
+            >
+                アクション開始
+            </button>
+            <button
+                onClick={onChatModeToggle}
+                disabled={isVoicePlaying || showDialog}
+                className={isChatMode ? 'active' : ''}
+            >
+                {isChatMode ? '通常モードに戻る' : '会話モードへ'}
+            </button>
+        </div>
     </div>
 ); 

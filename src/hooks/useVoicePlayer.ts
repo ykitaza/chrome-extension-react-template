@@ -10,6 +10,7 @@ export const useVoicePlayer = (voice?: VoiceProps) => {
             const audioSource = getAudioSource(voice.src);
             if (!audioSource) return;
 
+            // 既存の音声を停止
             if (audioRef.current) {
                 audioRef.current.pause();
                 audioRef.current.removeEventListener('ended', audioRef.current.onended!);
@@ -20,16 +21,32 @@ export const useVoicePlayer = (voice?: VoiceProps) => {
             audio.addEventListener('ended', handleEnded);
             audioRef.current = audio;
 
+            // 音声の再生
             if (voice.autoPlay) {
-                audio.play().catch(error => {
-                    console.log("音声の自動再生に失敗しました:", error);
-                });
+                const playAudio = async () => {
+                    try {
+                        await audio.play();
+                    } catch (error) {
+                        console.log("音声の再生に失敗しました:", error);
+                        // 再生に失敗した場合は終了イベントを発火
+                        handleEnded();
+                    }
+                };
+                playAudio();
             }
 
             return () => {
                 audio.removeEventListener('ended', handleEnded);
                 audio.pause();
+                audioRef.current = null;
             };
+        } else {
+            // voice が undefined の場合は既存の音声を停止
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.removeEventListener('ended', audioRef.current.onended!);
+                audioRef.current = null;
+            }
         }
     }, [voice]);
 

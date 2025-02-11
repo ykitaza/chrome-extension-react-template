@@ -151,3 +151,18 @@ button:disabled {
 .credits a:hover {
   text-decoration: underline;
 }
+
+.action-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+button.active {
+  background-color: #646cff;
+  border-color: #535bf2;
+}
+
+button.active:hover:not(:disabled) {
+  background-color: #535bf2;
+}
