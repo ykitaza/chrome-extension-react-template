@@ -1,15 +1,19 @@
 import { SpriteConfig } from '../types/common';
+import idle_default from '../assets/sprite/idle_default.png';
+import idle_happy from '../assets/sprite/idle_default.png';
+import talk from '../assets/sprite/talk.png';
+import hello from '../assets/voices/hello.wav';
 
 export const spriteConfig: SpriteConfig = {
     idle: {
         default: {
-            src: '/src/assets/sprite/idle_default.png',
+            src: idle_default,
             size: { width: 1082, height: 1650 },
             scale: 0.2,
             frames: 2
         },
         happy: {
-            src: '/src/assets/sprite/idle_happy.png',
+            src: idle_happy,
             size: { width: 1082, height: 1650 },
             scale: 0.2,
             frames: 2
@@ -17,24 +21,24 @@ export const spriteConfig: SpriteConfig = {
     },
     action: {
         talk: {
-            src: '/src/assets/sprite/talk.png',
+            src: talk,
             size: { width: 1082, height: 1650 },
             scale: 0.2,
             frames: 2,
             fps: 7,
-            voice: '/src/assets/voices/hello.wav',
+            voice: hello,
             dialog: {
                 text: "やっほーなのだ！ ぼく、ずんだもんなのだ！ ずんだ餅が大好きなのだ！",
                 speed: 150
             }
         },
         greet: {
-            src: '/src/assets/sprite/talk.png',
+            src: talk,
             size: { width: 1082, height: 1650 },
             scale: 0.2,
             frames: 2,
             fps: 7,
-            voice: '/src/assets/voices/hello.wav',
+            voice: hello,
             dialog: {
                 text: "こんにちはなのだ！",
                 speed: 150
