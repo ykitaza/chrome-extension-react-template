@@ -37,13 +37,42 @@ This will start the Vite development server and open your default browser.
 
 ## 📦 Build 
 
-To create a production build:
+### For Chrome Extension
+
+To create a production build for Chrome Extension:
 
 ```sh
 npm run build
 ```
 
 This will generate the build files in the `build` directory.
+
+### For GitHub Pages
+
+To create a production build for GitHub Pages:
+
+```sh
+npm run build:github
+```
+
+This will generate the build files in the `docs` directory.
+
+## 🚀 Deploy to GitHub Pages
+
+1. Run the GitHub Pages build:
+   ```sh
+   npm run build:github
+   ```
+
+2. Commit and push the generated `docs` directory to your repository.
+
+3. Go to your repository settings on GitHub:
+   - Navigate to "Pages"
+   - Select "Deploy from a branch"
+   - Choose "main" branch and "/docs" folder
+   - Click "Save"
+
+Your app will be available at: `https://[your-username].github.io/chrome-extension-react-template/`
 
 ## 📂 Load Extension in Chrome
 

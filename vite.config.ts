@@ -1,13 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
-  base: './',
+// GitHub Pagesのリポジトリ名を指定
+const repoName = 'chrome-extension-react-template'
+
+export default defineConfig(({ mode }) => ({
+  base: mode === 'github' ? `/${repoName}/` : './',
   plugins: [
     react(),
   ],
   build: {
-    outDir: 'build',
+    outDir: mode === 'github' ? 'docs' : 'build',
     assetsDir: 'assets',
     rollupOptions: {
       input: {
@@ -15,4 +18,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
