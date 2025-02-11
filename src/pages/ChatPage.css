@@ -107,3 +107,27 @@
         width: 100%;
     }
 }
+
+.chat-animation-container :global(.speech-bubble) {
+    max-width: 400px;
+    position: absolute;
+    top: 50%;
+    right: calc(100% - 2rem);
+    transform: translateY(-50%);
+    padding: 1rem;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    text-align: left;
+    background-color: rgba(26, 26, 26, 0.8);
+    border-radius: 8px;
+    margin-right: 1rem;
+    line-height: 1.5;
+}
+
+.chat-animation-container :global(.speech-bubble-content) {
+    max-height: calc(1.5em * 3);
+    /* 3行分の高さ */
+    overflow-y: auto;
+    padding-right: 1rem;
+    font-size: 1rem;
+}

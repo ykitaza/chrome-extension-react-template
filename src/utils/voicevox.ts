@@ -31,8 +31,8 @@ export async function generateVoice(text: string, options: VoicevoxOptions = {})
         text,
         speaker: (options.speaker ?? 3).toString(), // ずんだもん（あまあま）
         pitch: (options.pitch ?? 0).toString(),
-        intonationScale: (options.intonationScale ?? 1).toString(),
-        speed: (options.speed ?? 1).toString(),
+        intonationScale: (options.intonationScale ?? 1.2).toString(), // イントネーションを少し強く
+        speed: (options.speed ?? 1.4).toString(), // スピードを1.4倍に
     });
 
     try {
