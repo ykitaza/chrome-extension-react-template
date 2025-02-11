@@ -70,7 +70,7 @@ function App() {
       />
       <div className="credits">
         <p>VOICEVOX：ずんだもん</p>
-        <p>立ち絵：<a href="https://twitter.com/ahirusandesita" target="_blank" rel="noopener noreferrer">坂本アヒル</a> 様</p>
+        <p>立ち絵：<a href="https://x.com/sakamoto_ahr" target="_blank" rel="noopener noreferrer">坂本アヒル</a> 様</p>
       </div>
     </div>
   )
