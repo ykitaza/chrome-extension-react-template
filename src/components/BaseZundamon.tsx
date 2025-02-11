@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react';
 import { BaseProps, AnimationProps } from '../types/common';
 import { createImageErrorHandler, createErrorDisplay } from '../utils/sprite';
 
-export interface ZundamonProps extends BaseProps, AnimationProps {
+export interface BaseZundamonProps extends BaseProps, AnimationProps {
     currentFrame: number;
 }
 
-export const Zundamon = ({
+export const BaseZundamon = ({
     src,
     size,
     scale = 1,
     frames = 1,
     currentFrame = 0
-}: ZundamonProps) => {
+}: BaseZundamonProps) => {
     const [imageError, setImageError] = useState(false);
     const scaledWidth = size.width * scale;
     const scaledHeight = size.height * scale;

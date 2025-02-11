@@ -1,19 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { BaseProps, BlinkAnimationProps } from '../types/common';
-import { BaseZundamon } from './BaseZundamon';
+import { Zundamon } from './Zundamon';
 
-interface BlinkingZundamonProps extends BaseProps, BlinkAnimationProps {
+interface IdleZundamonProps extends BaseProps, BlinkAnimationProps {
     frames?: number;
 }
 
-const BlinkingZundamon = ({
+const IdleZundamon = ({
     src,
     size,
     scale = 1,
     frames = 2,
     interval = { min: 1000, max: 4000 },
     duration = 150
-}: BlinkingZundamonProps) => {
+}: IdleZundamonProps) => {
     const [currentFrame, setCurrentFrame] = useState(0);
     const blinkTimeoutRef = useRef<number | null>(null);
 
@@ -46,7 +46,7 @@ const BlinkingZundamon = ({
     }, [interval, duration]);
 
     return (
-        <BaseZundamon
+        <Zundamon
             src={src}
             size={size}
             scale={scale}
@@ -56,4 +56,4 @@ const BlinkingZundamon = ({
     );
 };
 
-export default BlinkingZundamon; 
+export default IdleZundamon; 

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import Zundamon from '../components/Zundamon'
-import BlinkingZundamon from '../components/BlinkingZundamon'
+import ActionZundamon from '../components/ActionZundamon'
+import IdleZundamon from '../components/IdleZundamon'
 import { spriteConfig, defaultBlinkConfig } from '../config/sprites'
 import './App.css'
 
@@ -24,7 +24,7 @@ function App() {
     <div className="app-container">
       <div className="animation-container">
         {isVoicePlaying ? (
-          <Zundamon
+          <ActionZundamon
             src={spriteConfig.talk.src}
             size={spriteConfig.talk.size}
             scale={spriteConfig.talk.scale}
@@ -39,13 +39,13 @@ function App() {
             dialog={showDialog ? spriteConfig.talk.dialog : undefined}
           />
         ) : (
-          <BlinkingZundamon
+          <IdleZundamon
             src={spriteConfig.idle.src}
             size={spriteConfig.idle.size}
             scale={spriteConfig.idle.scale}
+            frames={spriteConfig.idle.frames}
             interval={defaultBlinkConfig.interval}
             duration={defaultBlinkConfig.duration}
-            frames={spriteConfig.idle.frames}
           />
         )}
       </div>
