@@ -40,4 +40,22 @@ export interface DialogProps {
     speed?: number;
     style?: React.CSSProperties;
     onComplete?: () => void;
+}
+
+export interface SpriteConfig {
+    idle: {
+        src: string;
+        size: SpriteSize;
+        scale: number;
+        frames: number;
+    };
+    talk: {
+        src: string;
+        size: SpriteSize;
+        scale: number;
+        frames: number;
+        fps: number;
+        voice: string;
+        dialog: DialogProps;
+    };
 } 

@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { BaseProps, BlinkAnimationProps } from '../types/common';
 import { createImageErrorHandler, createErrorDisplay } from '../utils/sprite';
 
-interface BlinkingZundamonProps extends BaseProps, BlinkAnimationProps { }
+interface BlinkingZundamonProps extends BaseProps, BlinkAnimationProps {
+    frames?: number;
+}
 
 const BlinkingZundamon = ({
     src,
     size,
+    frames,
     scale = 1,
     interval = { min: 1000, max: 4000 },
     duration = 150
@@ -66,7 +69,7 @@ const BlinkingZundamon = ({
             backgroundImage: `url(${src})`,
             backgroundPosition: `-${currentFrame * scaledWidth}px 0`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: `${scaledWidth * 2}px ${scaledHeight}px`,
+            backgroundSize: `${scaledWidth * frames}px ${scaledHeight}px`,
         }} />
     );
 };

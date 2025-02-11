@@ -1,8 +1,11 @@
-export const spriteConfig = {
+import { SpriteConfig } from '../types/common';
+
+export const spriteConfig: SpriteConfig = {
     idle: {
         src: '/src/assets/sprite/idle.png',
         size: { width: 1082, height: 1650 },
         scale: 0.2,
+        frames: 2
     },
 
     talk: {

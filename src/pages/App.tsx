@@ -45,6 +45,7 @@ function App() {
             scale={spriteConfig.idle.scale}
             interval={defaultBlinkConfig.interval}
             duration={defaultBlinkConfig.duration}
+            frames={spriteConfig.idle.frames}
           />
         )}
       </div>
