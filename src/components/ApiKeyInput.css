@@ -15,6 +15,16 @@
     color: #888;
 }
 
+.storage-notice {
+    margin: 1rem 0;
+    padding: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #888;
+    line-height: 1.4;
+}
+
 .api-key-input form {
     display: flex;
     flex-direction: column;

@@ -37,6 +37,10 @@ export const ApiKeyInput = ({ onApiKeySet }: ApiKeyInputProps) => {
         <div className="api-key-input">
             <h2>Gemini APIキーの設定</h2>
             <p>会話機能を使用するにはGemini APIキーが必要です。</p>
+            <p className="storage-notice">
+                ※APIキーはブラウザのローカルストレージに保存されます。<br />
+                他人と共有しているデバイスでは注意してください。
+            </p>
             <form onSubmit={handleSubmit}>
                 <input
                     type="password"

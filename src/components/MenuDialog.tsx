@@ -5,16 +5,12 @@ interface MenuDialogProps {
     isOpen: boolean;
     onClose: () => void;
     onSettingsClick: () => void;
-    onChatModeToggle?: () => void;
-    isChatMode?: boolean;
 }
 
 export const MenuDialog = ({
     isOpen,
     onClose,
-    onSettingsClick,
-    onChatModeToggle,
-    isChatMode
+    onSettingsClick
 }: MenuDialogProps) => {
     const { isDark, toggleTheme } = useTheme();
 
@@ -28,12 +24,6 @@ export const MenuDialog = ({
     return (
         <div className="menu-overlay" onClick={onClose}>
             <div className="menu-content" onClick={e => e.stopPropagation()}>
-                {onChatModeToggle && (
-                    <button className="menu-item" onClick={onChatModeToggle}>
-                        <span className="menu-icon">💭</span>
-                        {isChatMode ? '通常モードに戻る' : '会話モードへ'}
-                    </button>
-                )}
                 <button className="menu-item" onClick={handleSettingsClick}>
                     <span className="menu-icon">⚙️</span>
                     API設定

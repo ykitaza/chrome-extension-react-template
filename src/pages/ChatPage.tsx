@@ -2,25 +2,19 @@ import { useState, useRef, useEffect } from 'react';
 import ActionZundamon from '../components/ActionZundamon';
 import { spriteConfig, defaultBlinkConfig } from '../config/sprites';
 import { generateResponse, getApiKey } from '../utils/gemini';
-import { generateVoice, getVoicevoxApiKey } from '../utils/voicevox';
+import { generateVoice } from '../utils/voicevox';
 import { ApiKeyInput } from '../components/ApiKeyInput';
-import { VoicevoxKeyInput } from '../components/VoicevoxKeyInput';
 import { Layout } from '../components/Layout';
 import './ChatPage.css';
 import IdleZundamon from '../components/IdleZundamon';
 
-interface ChatPageProps {
-    onBackToNormal: () => void;
-}
-
-export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
+export const ChatPage = () => {
     const [message, setMessage] = useState('');
     const [isAnimating, setIsAnimating] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [response, setResponse] = useState('');
     const [dialogSpeed, setDialogSpeed] = useState(50);
     const [hasGeminiKey, setHasGeminiKey] = useState(() => !!getApiKey());
-    const [hasVoicevoxKey, setHasVoicevoxKey] = useState(() => !!getVoicevoxApiKey());
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
 
@@ -67,68 +61,57 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
         try {
             const aiResponse = await generateResponse(message);
 
-            if (hasVoicevoxKey) {
-                try {
-                    const audioUrl = await generateVoice(aiResponse);
-                    const speed = calculateDialogSpeed(aiResponse, 5000);
-                    setDialogSpeed(speed);
+            try {
+                const audioUrl = await generateVoice(aiResponse);
+                const speed = calculateDialogSpeed(aiResponse, 5000);
+                setDialogSpeed(speed);
 
-                    if (audioRef.current) {
-                        try {
-                            // イベントリスナーの設定
-                            audioRef.current.onplay = () => {
-                                console.log("音声再生開始");
-                                setResponse(aiResponse);
-                                setIsAnimating(true);
-                                setIsGenerating(false);
-                            };
+                if (audioRef.current) {
+                    try {
+                        // イベントリスナーの設定
+                        audioRef.current.onplay = () => {
+                            console.log("音声再生開始");
+                            setResponse(aiResponse);
+                            setIsAnimating(true);
+                            setIsGenerating(false);
+                        };
 
-                            audioRef.current.onended = () => {
-                                console.log("音声再生終了");
-                                handleAnimationEnd();
-                                cleanupAudioListeners();
-                            };
-
-                            audioRef.current.onerror = () => {
-                                console.error('音声の読み込みに失敗しました');
-                                setResponse(aiResponse);
-                                setDialogSpeed(50);
-                                setIsAnimating(true);
-                                setIsGenerating(false);
-                                setTimeout(() => {
-                                    handleAnimationEnd();
-                                    cleanupAudioListeners();
-                                }, 5000);
-                            };
-
-                            // srcの設定は最後に行う
-                            audioRef.current.src = audioUrl;
-                            await audioRef.current.play();
-                        } catch (playError) {
-                            console.error('音声の再生に失敗しました:', playError);
+                        audioRef.current.onended = () => {
+                            console.log("音声再生終了");
+                            handleAnimationEnd();
                             cleanupAudioListeners();
+                        };
+
+                        audioRef.current.onerror = () => {
+                            console.error('音声の読み込みに失敗しました');
                             setResponse(aiResponse);
                             setDialogSpeed(50);
                             setIsAnimating(true);
                             setIsGenerating(false);
                             setTimeout(() => {
                                 handleAnimationEnd();
+                                cleanupAudioListeners();
                             }, 5000);
-                        }
+                        };
+
+                        // srcの設定は最後に行う
+                        audioRef.current.src = audioUrl;
+                        await audioRef.current.play();
+                    } catch (playError) {
+                        console.error('音声の再生に失敗しました:', playError);
+                        cleanupAudioListeners();
+                        setResponse(aiResponse);
+                        setDialogSpeed(50);
+                        setIsAnimating(true);
+                        setIsGenerating(false);
+                        setTimeout(() => {
+                            handleAnimationEnd();
+                        }, 5000);
                     }
-                } catch (error) {
-                    console.error('音声生成エラー:', error);
-                    if (error instanceof Error && error.message === 'VOICEVOXのAPIキーが設定されていません') {
-                        setHasVoicevoxKey(false);
-                    }
-                    handleError();
                 }
-            } else {
-                setResponse(aiResponse);
-                setDialogSpeed(50);
-                setIsAnimating(true);
-                setIsGenerating(false);
-                setTimeout(handleAnimationEnd, 5000);
+            } catch (error) {
+                console.error('音声生成エラー:', error);
+                handleError();
             }
         } catch (error) {
             console.error('応答生成エラー:', error);
@@ -162,12 +145,8 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
         return <ApiKeyInput onApiKeySet={() => setHasGeminiKey(true)} />;
     }
 
-    if (!hasVoicevoxKey) {
-        return <VoicevoxKeyInput onApiKeySet={() => setHasVoicevoxKey(true)} />;
-    }
-
     return (
-        <Layout onChatModeToggle={onBackToNormal} isChatMode={true}>
+        <Layout>
             <div className="chat-animation-container">
                 {isAnimating ? (
                     <ActionZundamon
@@ -211,6 +190,11 @@ export const ChatPage = ({ onBackToNormal }: ChatPageProps) => {
                 ref={audioRef}
                 style={{ display: 'none' }}
             />
+
+            <div className="credits">
+                <p>VOICEVOX：ずんだもん</p>
+                <p>立ち絵：<a href="https://x.com/sakamoto_ahr" target="_blank" rel="noopener noreferrer">坂本アヒル</a> 様</p>
+            </div>
         </Layout>
     );
 }; 

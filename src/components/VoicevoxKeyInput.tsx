@@ -37,6 +37,10 @@ export const VoicevoxKeyInput = ({ onApiKeySet }: VoicevoxKeyInputProps) => {
         <div className="api-key-input">
             <h2>VOICEVOX APIキーの設定</h2>
             <p>音声機能を使用するにはVOICEVOX APIキーが必要です。</p>
+            <p className="storage-notice">
+                ※APIキーはブラウザのローカルストレージに保存されます。<br />
+                他人と共有しているデバイスでは注意してください。
+            </p>
             <form onSubmit={handleSubmit}>
                 <input
                     type="password"

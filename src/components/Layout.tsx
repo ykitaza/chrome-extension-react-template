@@ -5,11 +5,9 @@ import './Layout.css';
 
 interface LayoutProps {
     children: ReactNode;
-    onChatModeToggle?: () => void;
-    isChatMode?: boolean;
 }
 
-export const Layout = ({ children, onChatModeToggle, isChatMode }: LayoutProps) => {
+export const Layout = ({ children }: LayoutProps) => {
     const [showMenu, setShowMenu] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
 
@@ -29,8 +27,6 @@ export const Layout = ({ children, onChatModeToggle, isChatMode }: LayoutProps) 
                 isOpen={showMenu}
                 onClose={() => setShowMenu(false)}
                 onSettingsClick={() => setShowSettings(true)}
-                onChatModeToggle={onChatModeToggle}
-                isChatMode={isChatMode}
             />
 
             <SettingsDialog

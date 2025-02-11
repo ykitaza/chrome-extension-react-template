@@ -1,13 +1,22 @@
 // ローカルストレージのキー
 const API_KEY_STORAGE_KEY = 'voicevox_api_key';
 
+// デフォルトのAPIキー
+const DEFAULT_API_KEY = 'J40995411028387'; // ここに実際のデフォルトキーを設定
+
 // APIキーの取得と設定
-export function getVoicevoxApiKey(): string | null {
-    return localStorage.getItem(API_KEY_STORAGE_KEY);
+export function getVoicevoxApiKey(): string {
+    const savedKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+    return savedKey || DEFAULT_API_KEY;
 }
 
 export function setVoicevoxApiKey(apiKey: string): void {
     localStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
+}
+
+// APIキーをリセット（デフォルトに戻す）
+export function resetVoicevoxApiKey(): void {
+    localStorage.removeItem(API_KEY_STORAGE_KEY);
 }
 
 // 音声合成APIのベースURL

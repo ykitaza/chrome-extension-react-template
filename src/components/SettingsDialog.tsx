@@ -41,6 +41,10 @@ export const SettingsDialog = ({ isOpen, onClose }: SettingsDialogProps) => {
         <div className="settings-overlay">
             <div className="settings-dialog">
                 <h2>API設定</h2>
+                <p className="settings-description">
+                    APIキーはブラウザのローカルストレージに保存されます。
+                    他人と共有しているデバイスでは注意してください。
+                </p>
                 <form onSubmit={handleSubmit}>
                     <div className="settings-group">
                         <label>
