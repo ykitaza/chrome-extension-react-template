@@ -1,0 +1,25 @@
+.credits {
+    text-align: center;
+    padding: 2rem;
+}
+
+.credits h2 {
+    color: #646cff;
+    margin-bottom: 1.5rem;
+}
+
+.credits-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #888;
+}
+
+.credits-content a {
+    color: #646cff;
+    text-decoration: none;
+}
+
+.credits-content a:hover {
+    text-decoration: underline;
+}

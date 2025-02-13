@@ -8,7 +8,7 @@ interface ControlPanelProps {
     currentActionPattern: string;
     onIdlePatternChange: (pattern: string) => void;
     onActionPatternChange: (pattern: string) => void;
-    onVoicePlay: () => void;
+    onActionStart: () => void;
 }
 
 export const ControlPanel = ({
@@ -18,7 +18,7 @@ export const ControlPanel = ({
     currentActionPattern,
     onIdlePatternChange,
     onActionPatternChange,
-    onVoicePlay
+    onActionStart
 }: ControlPanelProps) => (
     <div className="controls">
         <div className="pattern-controls">
@@ -39,11 +39,13 @@ export const ControlPanel = ({
                 disabled={isVoicePlaying}
             />
         </div>
-        <button
-            onClick={onVoicePlay}
-            disabled={isVoicePlaying || showDialog}
-        >
-            会話開始
-        </button>
+        <div className="action-controls">
+            <button
+                onClick={onActionStart}
+                disabled={isVoicePlaying || showDialog}
+            >
+                アクション開始
+            </button>
+        </div>
     </div>
 ); 
